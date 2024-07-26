@@ -8,7 +8,7 @@ __version__ = "0.0.0"
 
 REPO_NAME = "Sleep Efficiency App"
 AUTHOR_USER_NAME = "Anh Tien"
-SRC_REPO = "Sleep Efficiency App"
+SRC_REPO = "Sleep_Efficiency_App"
 AUTHOR_EMAIL = "tienpa.vn@gmail.com"
 
 
