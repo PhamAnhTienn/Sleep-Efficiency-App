@@ -3,6 +3,6 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: https://github.com/RavinderRai/SleepEfficiencyML/raw/main/data/sleep_efficiency_zip.zip
+  source_URL: https://github.com/PhamAnhTienn/Sleep-Efficiency-App/raw/main/data/Sleep-deprivation.zip
   local_data_file: artifacts/data_ingestion/data.zip
   unzip_dir: artifacts/data_ingestion
