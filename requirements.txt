@@ -1,5 +1,6 @@
 pandas
-mlflow==2.2.2
+mlflow
+dagshub
 notebook
 numpy
 scikit-learn
@@ -12,5 +13,7 @@ joblib
 types-PyYAML
 Flask
 Flask-Cors
+xgboost
+catboost
 
 -e .
