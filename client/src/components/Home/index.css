@@ -1,3 +1,9 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
 .home {
     background-image: url('../../assets/home.png'); /* Adjust the path according to your project structure */
     background-size: cover;

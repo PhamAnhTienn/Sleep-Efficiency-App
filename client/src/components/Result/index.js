@@ -16,8 +16,17 @@ const Result = () => {
     <div className="container">
       <h1>Prediction Result</h1>
       <div className="result">
-        <p><strong>Prediction:</strong> {prediction}</p>
-        <button onClick = {handleClick} className='back-button'>Go Back</button>
+        <p>Prediction: {prediction}</p>
+        <button onClick = {handleClick} className="btn">
+          <strong>GO BACK</strong>
+          <div id="container-stars">
+            <div id="stars"></div>
+          </div>
+          <div id="glow">
+            <div className="circle"></div>
+            <div className="circle"></div>
+          </div>
+        </button>
       </div>
     </div>
   );
