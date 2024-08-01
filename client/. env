@@ -1,7 +1,0 @@
-VITE_FB_APIKEY=your_api_key
-VITE_FB_AUTHDOMAIN=your_auth_domain
-VITE_FB_PROJECTID=your_project_id
-VITE_FB_STORAGEBUCKET=your_storage_bucket
-VITE_FB_MESSAGINGSENDERID=your_messaging_sender_id
-VITE_FB_APPID=your_app_id
-VITE_FB_MEASUREMENTID=your_measurement_id

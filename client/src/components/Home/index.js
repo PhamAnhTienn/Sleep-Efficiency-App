@@ -7,7 +7,7 @@ const Home = () => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        navigate('/predict');
+        navigate('/auth');
     };
 
     return (
