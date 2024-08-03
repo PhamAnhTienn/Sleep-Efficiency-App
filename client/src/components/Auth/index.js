@@ -3,6 +3,7 @@ import { auth, googleProvider } from '../../firebase/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import Googlebutton from 'react-google-button';
+import axios from 'axios';
 import './index.css';
 
 const Auth = () => {
@@ -22,8 +23,21 @@ const Auth = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log(result);
-      localStorage.setItem('token', result.user.accessToken);
-      localStorage.setItem('user', JSON.stringify(result.user));
+
+      await axios.post('/api/users', {
+        name: result.user.displayName,
+        email: result.user.email,
+        googleId: result.user.uid,
+        accessToken: result.user.accessToken,
+      });
+
+      localStorage.setItem('user', JSON.stringify({
+        name: result.user.displayName,
+        email: result.user.email,
+        googleId: result.user.uid,
+        accessToken: result.user.accessToken,
+      }));
+
       navigate("/predict");
     } catch (error) {
       console.error('Error during Google sign-in', error);

@@ -9,14 +9,14 @@ const Result = () => {
   const { prediction } = location.state || {};
 
   const handleClick = () => {
-    navigate('/');
+    navigate('/predict');
   };
 
   return (
     <div className="container">
       <h1>Prediction Result</h1>
       <div className="result">
-        <p>Prediction: {prediction}</p>
+        <p>Great job! You spend {prediction * 100}% of your time in bed sleeping.</p>
         <button onClick = {handleClick} className="btn">
           <strong>GO BACK</strong>
           <div id="container-stars">

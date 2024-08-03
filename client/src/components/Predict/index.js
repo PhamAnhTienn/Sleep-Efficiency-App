@@ -54,12 +54,29 @@ const Predict = () => {
 
   const signOutWithGoogle = async (e) => {
     try {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        throw new Error('User information not found in local storage');
+      }
+  
+      const response = await fetch('/api/users/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: user.email }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
       await signOut(auth);
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       navigate("/auth");
     } catch (error) {
-      console.error(error);
+      console.error('Error:', error);
     }
   };
 
@@ -238,7 +255,7 @@ const Predict = () => {
             </div>
           </div>
 
-          <div className="form-row-last">
+          <div className="form-row-buttons">
             <button className="btn" type="submit" value="Predict">
               <strong>PREDICT</strong>
               <div id="container-stars">
@@ -249,10 +266,7 @@ const Predict = () => {
                 <div className="circle"></div>
               </div>
             </button>
-          </div>
-
-          <div className="form-row-last">
-            <button className="btn" onClick = {signOutWithGoogle}>
+            <button className="btn" onClick={signOutWithGoogle}>
               <strong>Sign Out</strong>
               <div id="container-stars">
                 <div id="stars"></div>

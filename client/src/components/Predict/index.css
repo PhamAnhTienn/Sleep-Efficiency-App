@@ -69,9 +69,10 @@
     margin-bottom: 8px; /* Added margin-bottom for spacing between combined rows */
   }
 
-  .form-row-last {
-    text-align: center;
-    margin-top: -200px; /* Reduced margin-top to decrease the space above the button */
+  .form-row-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Adjust as needed */
   }
 
   .btn {
