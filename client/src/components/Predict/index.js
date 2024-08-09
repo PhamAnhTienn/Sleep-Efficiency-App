@@ -33,7 +33,7 @@ const Predict = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/predict', {
+      const response = await fetch('http://localhost:5000/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ const Predict = () => {
         throw new Error('User information not found in local storage');
       }
   
-      const response = await fetch('/api/users/logout', {
+      const response = await fetch('http://localhost:5000/api/users/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
