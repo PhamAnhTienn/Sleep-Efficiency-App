@@ -71,15 +71,14 @@
 
   .form-row-buttons {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px; /* Adjust as needed */
+    margin-top: -200px; /* Adjust as needed */
   }
 
   .btn {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 20px;
+    padding: 20px 40px;
     border-radius: 50px;
     background-color: #f3c623;
     color: #000;

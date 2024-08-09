@@ -8,7 +8,6 @@ import './index.css';
 
 const Auth = () => {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
-
   const navigate = useNavigate();
 
   const activateSignUpPanel = () => {
@@ -46,55 +45,38 @@ const Auth = () => {
 
   return (
     <div className="Auth">
-      {/* Animated Wave Background */}
       <div className="ocean">
         <div className="wave"></div>
         <div className="wave"></div>
       </div>
-
-      {/* Authentication Form Section */}
       <section>
         <div className={`container ${isSignUpActive ? 'right-panel-active' : ''}`} id="container">
           <div className="form-container sign-up-container">
             <form action="#">
               <h1>Sign Up</h1>
-              <div className="social-container">
-                <a href="https://Github.com/YasinDehfuli" target="_blank" rel="noopener noreferrer" className="social"><i className="fab fa-github"></i></a>
-              </div>
               <span>Or use your Email for registration</span>
-              <label>
-                <input type="text" placeholder="Name" />
-              </label>
-              <label>
-                <input type="email" placeholder="Email" />
-              </label>
-              <label>
-                <input type="password" placeholder="Password" />
-              </label>
-              <button style={{ marginTop: '9px' }}>Sign Up</button>
+              <input type="text" placeholder="Name" />
+              <input type="email" placeholder="Email" />
+              <input type="password" placeholder="Password" />
+              <button>Sign Up</button>
             </form>
           </div>
           <div className="form-container sign-in-container">
+            <form action="#">
               <h1>Sign In</h1>
-              <div className="social-container">
-                <a href="https://Github.com/YasinDehfuli" target="_blank" rel="noopener noreferrer" className="social"><i className="fab fa-github"></i></a>
-              </div>
               <span>Or sign in using your email address</span>
-              <label>
-                <input type="email" placeholder="Email" />
-              </label>
-              <label>
-                <input type="password" placeholder="Password" />
-              </label>
+              <input type="email" placeholder="Email" />
+              <input type="password" placeholder="Password" />
               <button>Sign In</button>
-              <Googlebutton onClick = {signInWithGoogle} />
+              <Googlebutton onClick={signInWithGoogle} />
+            </form>
           </div>
           <div className="overlay-container">
             <div className="overlay">
               <div className="overlay-panel overlay-left">
                 <h1>Welcome Back!</h1>
                 <p>If you already have an account, sign in here</p>
-                <button className="ghost mt-5" onClick={activateSignInPanel}>Sign In</button>
+                <button className="ghost" onClick={activateSignInPanel}>Sign In</button>
               </div>
               <div className="overlay-panel overlay-right">
                 <h1>Create Account</h1>

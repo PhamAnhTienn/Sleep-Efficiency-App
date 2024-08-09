@@ -266,7 +266,7 @@ const Predict = () => {
                 <div className="circle"></div>
               </div>
             </button>
-            <button className="btn" onClick={signOutWithGoogle}>
+            <button className="btn signout" onClick={signOutWithGoogle}>
               <strong>Sign Out</strong>
               <div id="container-stars">
                 <div id="stars"></div>

@@ -1,6 +1,4 @@
-/* Version 2 Styles */
 .Auth {
-  /* Animated Wave Background Style  */
   html, body {
     width: 100%;
     height: 100%;
@@ -9,7 +7,6 @@
   body {
     background: radial-gradient(ellipse at center, rgba(255,254,234,1) 0%, rgba(255,254,234,1) 35%, #B7E8EB 100%);
     overflow: hidden;
-    margin: 0;
   }
 
   .ocean {
@@ -38,21 +35,13 @@
   }
 
   @keyframes wave {
-    0% {
-        margin-left: 0;
-    }
-    100% {
-        margin-left: -1600px;
-    }
+    0% { margin-left: 0; }
+    100% { margin-left: -1600px; }
   }
 
   @keyframes swell {
-    0%, 100% {
-        transform: translate3d(0, -25px, 0);
-    }
-    50% {
-        transform: translate3d(0, 5px, 0);
-    }
+    0%, 100% { transform: translate3d(0, -25px, 0); }
+    50% { transform: translate3d(0, 5px, 0); }
   }
 
   /* Login Section Style */
@@ -166,6 +155,8 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     transition: transform 0.1s ease-in;
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
 
   button:active {
