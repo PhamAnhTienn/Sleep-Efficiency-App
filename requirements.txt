@@ -15,5 +15,6 @@ Flask
 Flask-Cors
 xgboost
 catboost
+pymongo
 
 -e .

@@ -84,6 +84,7 @@ const Predict = () => {
     <div className="Predict">
       <div className="form-container">
         <h1>Predicting Sleep Efficiency</h1>
+
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <label htmlFor="Age">Age:</label>
@@ -162,120 +163,119 @@ const Predict = () => {
             </select>
           </div>
 
-          <div className="form-row-total">
-            <div className="form-row">
-              <label htmlFor="Sleep_duration">Sleep Duration (in hours):</label>
-              <input
-                type="number"
-                name="Sleep_duration"
-                id="Sleep_duration"
-                className="input-text"
-                value={formData.Sleep_duration}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-row">
-              <label htmlFor="Awakenings">Awakenings during sleeping:</label>
-              <input
-                type="number"
-                name="Awakenings"
-                id="Awakenings"
-                className="input-text"
-                value={formData.Awakenings}
-                onChange={handleChange}
-                required
-              />
-            </div>
+          <div className="form-row">
+            <label htmlFor="Sleep_duration">Sleep Duration (in hours):</label>
+            <input
+              type="number"
+              name="Sleep_duration"
+              id="Sleep_duration"
+              className="input-text"
+              value={formData.Sleep_duration}
+              onChange={handleChange}
+              required
+            />
           </div>
 
-          <div className="form-row-combined">
-            <div className="form-row">
-              <label htmlFor="Caffeine_consumption">Caffeine Consumption Yesterday:</label>
-              <select
-                name="Caffeine_consumption"
-                id="Caffeine_consumption"
-                className="input-text"
-                value={formData.Caffeine_consumption}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Select Yes or No</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-
-            <div className="form-row">
-              <label htmlFor="Alcohol_consumption">Alcohol Consumption Yesterday:</label>
-              <select
-                name="Alcohol_consumption"
-                id="Alcohol_consumption"
-                className="input-text"
-                value={formData.Alcohol_consumption}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Select Yes or No</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
+          <div className="form-row">
+            <label htmlFor="Awakenings">Awakenings during sleeping:</label>
+            <input
+              type="number"
+              name="Awakenings"
+              id="Awakenings"
+              className="input-text"
+              value={formData.Awakenings}
+              onChange={handleChange}
+              required
+            />
           </div>
 
-          <div className="form-row-total">
-            <div className="form-row">
-              <label htmlFor="Smoking_status">Smoking Status:</label>
-              <select
-                name="Smoking_status"
-                id="Smoking_status"
-                className="input-text"
-                value={formData.Smoking_status}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Select Yes or No</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-
-            <div className="form-row">
-              <label htmlFor="Exercise_frequency">Exercise Frequency Each Week:</label>
-              <input
-                type="number"
-                name="Exercise_frequency"
-                id="Exercise_frequency"
-                className="input-text"
-                value={formData.Exercise_frequency}
-                onChange={handleChange}
-                required
-              />
-            </div>
+          <div className="form-row">
+            <label htmlFor="Caffeine_consumption">Caffeine Yesterday:</label>
+            <select
+              name="Caffeine_consumption"
+              id="Caffeine_consumption"
+              className="input-text"
+              value={formData.Caffeine_consumption}
+              onChange={handleChange}
+              required
+            >
+              <option value="" disabled>Select Yes or No</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
           </div>
 
-          <div className="form-row-buttons">
-            <button className="btn" type="submit" value="Predict">
-              <strong>PREDICT</strong>
-              <div id="container-stars">
-                <div id="stars"></div>
-              </div>
-              <div id="glow">
-                <div className="circle"></div>
-                <div className="circle"></div>
-              </div>
-            </button>
-            <button className="btn signout" onClick={signOutWithGoogle}>
-              <strong>Sign Out</strong>
-              <div id="container-stars">
-                <div id="stars"></div>
-              </div>
-              <div id="glow">
-                <div className="circle"></div>
-                <div className="circle"></div>
-              </div>
-            </button>
+          <div className="form-row">
+            <label htmlFor="Alcohol_consumption">Alcohol Yesterday:</label>
+            <select
+              name="Alcohol_consumption"
+              id="Alcohol_consumption"
+              className="input-text"
+              value={formData.Alcohol_consumption}
+              onChange={handleChange}
+              required
+            >
+              <option value="" disabled>Select Yes or No</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div className="form-row">
+            <label htmlFor="Smoking_status">Smoking Status:</label>
+            <select
+              name="Smoking_status"
+              id="Smoking_status"
+              className="input-text"
+              value={formData.Smoking_status}
+              onChange={handleChange}
+              required
+            >
+              <option value="" disabled>Select Yes or No</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div className="form-row">
+            <label htmlFor="Exercise_frequency">Exercise Frequency Each Week:</label>
+            <input
+              type="number"
+              name="Exercise_frequency"
+              id="Exercise_frequency"
+              className="input-text"
+              value={formData.Exercise_frequency}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-row-buttons-container">
+            <div className="form-row-buttons">
+              <button className="btn" type="submit" value="Predict">
+                <strong>PREDICT</strong>
+                <div id="container-stars">
+                  <div id="stars"></div>
+                </div>
+                <div id="glow">
+                  <div className="circle"></div>
+                  <div className="circle"></div>
+                </div>
+              </button>
+            </div>
+
+            <div className="form-row-buttons">
+              <button className="btn signout" onClick={signOutWithGoogle}>
+                <strong>Sign Out</strong>
+                <div id="container-stars">
+                  <div id="stars"></div>
+                </div>
+                <div id="glow">
+                  <div className="circle"></div>
+                  <div className="circle"></div>
+                </div>
+              </button>
+            </div>
           </div>
 
         </form>
