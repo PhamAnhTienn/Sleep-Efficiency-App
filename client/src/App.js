@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Predict from './components/Predict';
 import Result from './components/Result';
 import Auth from './components/Auth';
+import Notes from './components/Notes';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/predict" element={<Predict />} />
         <Route path="/result" element={<Result />} />
+        <Route path="/notes" element={<Notes />} />
       </Routes>
     </Router>
   );

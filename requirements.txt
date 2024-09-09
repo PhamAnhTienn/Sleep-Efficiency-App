@@ -16,5 +16,7 @@ Flask-Cors
 xgboost
 catboost
 pymongo
+psycopg2-binary
+sqlalchemy
 
 -e .

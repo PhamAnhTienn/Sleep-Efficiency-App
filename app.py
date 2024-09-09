@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from sqlalchemy import create_engine, Column, Integer, String, Text
+from sqlalchemy.orm import declarative_base, sessionmaker
 from pymongo import MongoClient
 import os
 import numpy as np
@@ -16,6 +18,21 @@ CORS(app)
 client = MongoClient('mongodb://localhost:27017/')
 db = client.userAuth  
 users_collection = db.users
+
+DATABASE_URL = os.getenv('DATABASE_URL')
+engine = create_engine(DATABASE_URL)
+Session = sessionmaker(bind=engine)
+session = Session()
+Base = declarative_base()
+
+class Note(Base):
+    __tablename__ = 'notes'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+    prediction = Column(String(50), nullable=False)
+    note = Column(Text, nullable=False)
+
+Base.metadata.create_all(engine)
 
 @app.route('/api/users', methods=['POST'])
 def create_user():
@@ -110,6 +127,75 @@ def predict():
 
     except Exception as e:
         logger.error(f'Error during prediction: {e}')
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/notes', methods=['POST'])
+def create_note():
+    try:
+        data = request.json
+        new_note = Note(
+            name=data['name'],
+            prediction=data['prediction'],
+            note=data['note']
+        )
+        session.add(new_note)
+        session.commit()
+        return jsonify({'message': 'Note created successfully'}), 201
+    except Exception as e:
+        logger.error(f'Error creating note: {e}')
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/notes', methods = ['GET'])
+def get_notes():
+    try:
+        notes = session.query(Note).all()
+        note_list = [{'name' : note.name , 'prediction': note.prediction, 'note': note.note} for note in notes]
+        return jsonify(note_list), 200
+    except Exception as e:
+        logger.error( f'Error fetching notes: {e}' )
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/notes/<name>', methods = ['GET'])
+def get_note_by_name(name):
+    try:
+        note = session.query(Note).filter_by(name=name).first()
+        if note:
+            return jsonify({'name': note.name, 'prediction': note.prediction, 'note': note.note}), 200
+        else:
+            return jsonify({'error': 'Note not found'}), 404
+    except Exception as e:
+        logger.error( f'Error fetching note by name: {e}' )
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/notes/<name>', methods=['PUT'])
+def update_note_by_name(name):
+    try:
+        data = request.json
+        note = session.query(Note).filter_by(name=name).first()
+
+        if note:
+            note.prediction = data.get('prediction', note.prediction)
+            note.note = data.get('note', note.note)
+            session.commit()
+            return jsonify({'message': 'Note updated successfully'}), 200
+        else:
+            return jsonify({'error': 'Note not found'}), 404
+
+    except Exception as e:
+        logger.error(f'Error updating note: {e}')
+        return jsonify({'error': str(e)}), 500
+    
+@app.route('/api/notes/<name>', methods = ['DELETE'])
+def delete_note_by_name(name):
+    try:
+        logger.info(f'Deleting note with name: {name}')
+        result = session.query(Note).filter_by(name=name).delete()
+        session.commit()
+        if result == 0:
+            return jsonify({'error': 'Note not found'}), 404
+        return jsonify({'message': 'Note deleted successfully'}), 200
+    except Exception as e:
+        logger.error(f'Error deleting note: {e}')
         return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
