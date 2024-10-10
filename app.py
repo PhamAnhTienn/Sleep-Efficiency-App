@@ -15,12 +15,13 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app)
 
-client = MongoClient('mongodb://localhost:27017/')
+MONGO_DB_URL = os.getenv('MONGO_DB_URL')
+client = MongoClient(MONGO_DB_URL)
 db = client.userAuth  
 users_collection = db.users
 
-DATABASE_URL = os.getenv('DATABASE_URL')
-engine = create_engine(DATABASE_URL)
+POSTGRES_URL = os.getenv('POSTGRES_URL')
+engine = create_engine(POSTGRES_URL)
 Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
@@ -199,4 +200,4 @@ def delete_note_by_name(name):
         return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=8080)

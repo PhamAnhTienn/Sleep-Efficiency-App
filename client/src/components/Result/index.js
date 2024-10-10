@@ -8,8 +8,12 @@ const Result = () => {
   const navigate = useNavigate();
   const { prediction } = location.state || {};
 
-  const handleClick = () => {
+  const goBacktoPredictPage = () => {
     navigate('/predict');
+  };
+
+  const goToNotesPage = () => {
+    navigate('/notes');
   };
 
   return (
@@ -17,16 +21,29 @@ const Result = () => {
       <h1>Prediction Result</h1>
       <div className="result">
         <p>Great job! You spend {prediction * 100}% of your time in bed sleeping.</p>
-        <button onClick = {handleClick} className="btn">
-          <strong>GO BACK</strong>
-          <div id="container-stars">
-            <div id="stars"></div>
-          </div>
-          <div id="glow">
-            <div className="circle"></div>
-            <div className="circle"></div>
-          </div>
-        </button>
+        <div className="button-container">
+          <button onClick={goBacktoPredictPage} className="btn">
+            <strong>GO BACK</strong>
+            <div id="container-stars">
+              <div id="stars"></div>
+            </div>
+            <div id="glow">
+              <div className="circle"></div>
+              <div className="circle"></div>
+            </div>
+          </button>
+
+          <button onClick={goToNotesPage} className="btn">
+            <strong>GO TO NOTES</strong>
+            <div id="container-stars">
+              <div id="stars"></div>
+            </div>
+            <div id="glow">
+              <div className="circle"></div>
+              <div className="circle"></div>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   );

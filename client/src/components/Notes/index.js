@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css';
 
-const Notes = () => {
+export default function ModernNotes() {
   const [notes, setNotes] = useState([]);
-  const [name, setName] = useState('');
-  const [prediction, setPrediction] = useState('');
-  const [note, setNote] = useState('');
-  const [editing, setEditing] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    prediction: '',
+    note: ''
+  });
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -18,84 +21,141 @@ const Notes = () => {
     try {
       const response = await axios.get('http://localhost:5000/api/notes');
       setNotes(response.data);
-    } catch (error) {
-      setError('Failed to fetch notes');
+    } catch (err) {
+      setError('Failed to fetch notes. Please try again later.');
     }
   };
 
-  const handleCreateOrUpdateNote = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const newNote = { name, prediction, note };
-      if (editing) {
-        await axios.put(`http://localhost:5000/api/notes/${name}`, newNote);
+      if (editingId) {
+        await axios.put(`http://localhost:5000/api/notes/${editingId}`, formData);
       } else {
-        await axios.post('http://localhost:5000/api/notes', newNote);
+        await axios.post('http://localhost:5000/api/notes', formData);
       }
       fetchNotes();
-      setName('');
-      setPrediction('');
-      setNote('');
-      setEditing(false);
-      setError('');
-    } catch (error) {
-      setError('Failed to save note');
+      resetForm();
+    } catch (err) {
+      setError(editingId ? 'Failed to update note.' : 'Failed to create note.');
     }
   };
 
-  const handleEditNote = (note) => {
-    setName(note.name);
-    setPrediction(note.prediction);
-    setNote(note.note);
-    setEditing(true);
-  };
-
-  const handleDeleteNote = async (name) => {
+  const handleDelete = async (name) => {
     try {
       await axios.delete(`http://localhost:5000/api/notes/${name}`);
       fetchNotes();
-    } catch (error) {
-      setError('Failed to delete note');
+    } catch (err) {
+      setError('Failed to delete note.');
     }
   };
 
+  const startEdit = (note) => {
+    setFormData({ name: note.name, prediction: note.prediction, note: note.note });
+    setEditingId(note.name);
+    setIsCreating(true);
+  };
+
+  const resetForm = () => {
+    setFormData({ name: '', prediction: '', note: '' });
+    setEditingId(null);
+    setIsCreating(false);
+    setError('');
+  };
+
   return (
-    <div className="notes-container">
-      <h1>{editing ? 'Edit Note' : 'Create and View Notes'}</h1>
-      {error && <div className="error-message">{error}</div>}
+    <div className="notes-app-container">
+      <div className="notes-header">
+        <h1>Sleep Notes Board</h1>
+        <p className="subtitle">Share your thoughts and predictions with everyone</p>
+      </div>
+
       <div className="notes-content">
-        <div className="note-form">
-          <input
-            type="text"
-            placeholder="Your Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={editing}
-          />
-          <input
-            type="text"
-            placeholder="Prediction Result"
-            value={prediction}
-            onChange={(e) => setPrediction(e.target.value)}
-          />
-          <textarea
-            placeholder="Your Note"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-          ></textarea>
-          <button onClick={handleCreateOrUpdateNote}>
-            {editing ? 'Update Note' : 'Create Note'}
-          </button>
+        <div className="create-note-section">
+          {error && (
+            <div className="error-alert">
+              {error}
+            </div>
+          )}
+
+          <div className={`note-card ${isCreating ? 'expanded' : ''}`}>
+            <div className="note-card-header">
+              <h2>{editingId ? 'Edit Note' : 'Create Note'}</h2>
+              {isCreating && (
+                <button onClick={resetForm} className="icon-button">
+                  ×
+                </button>
+              )}
+            </div>
+            <div className="note-card-content">
+              {!isCreating ? (
+                <button
+                  onClick={() => setIsCreating(true)}
+                  className="create-button"
+                >
+                  + Add a new note
+                </button>
+              ) : (
+                <form onSubmit={handleSubmit} className="note-form">
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    disabled={editingId}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Prediction"
+                    value={formData.prediction}
+                    onChange={(e) => setFormData({...formData, prediction: e.target.value})}
+                  />
+                  <textarea
+                    placeholder="Your Note"
+                    value={formData.note}
+                    onChange={(e) => setFormData({...formData, note: e.target.value})}
+                  />
+                  <div className="form-actions">
+                    <button type="submit" className="submit-button">
+                      {editingId ? 'Update' : 'Create'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="notes-wrapper">
-          <div className="notes-list">
+
+        <div className="notes-list-section">
+          <div className="notes-grid">
             {notes.map((note) => (
-              <div key={note.name} className="note-item">
-                <h2>{note.name}</h2>
-                <p>Prediction: {note.prediction}</p>
-                <p>Note: {note.note}</p>
-                <div className="note-actions">
-                  <button className="edit-button" onClick={() => handleEditNote(note)}>Edit</button>
-                  <button className="delete-button" onClick={() => handleDeleteNote(note.name)}>Delete</button>
+              <div key={note.name} className="note-card">
+                <div className="note-card-header">
+                  <h2>{note.name}</h2>
+                  <div className="note-actions">
+                    <button
+                      onClick={() => startEdit(note)}
+                      className="icon-button"
+                    >
+                      ✏️
+                    </button>
+                    <button
+                      onClick={() => handleDelete(note.name)}
+                      className="icon-button delete"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+                <div className="note-card-content">
+                  <div className="note-section">
+                    <label>Prediction</label>
+                    <p>{note.prediction}</p>
+                  </div>
+                  <div className="note-section">
+                    <label>Note</label>
+                    <p>{note.note}</p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -104,6 +164,4 @@ const Notes = () => {
       </div>
     </div>
   );
-};
-
-export default Notes;
+}
