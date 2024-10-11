@@ -23,7 +23,7 @@ const Auth = () => {
       const result = await signInWithPopup(auth, googleProvider);
       console.log(result);
 
-      await axios.post('http://localhost:5000/api/users', {
+      await axios.post('http://54.81.174.105:8080/api/users', {
         name: result.user.displayName,
         email: result.user.email,
         googleId: result.user.uid,
