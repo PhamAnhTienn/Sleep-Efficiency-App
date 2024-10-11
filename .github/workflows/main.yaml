@@ -93,7 +93,7 @@ jobs:
          
       - name: Stop and remove container if running
         run: |
-         docker ps -q --filter "name=sleepeff" | grep -q . && docker stop sleepeff && docker rm -fv sleepeff 
+         docker ps -q --filter "name=sleepeff" | grep -q . && docker stop sleepeff && docker rm -fv sleepeff || echo "No container running"
        
       - name: Run Docker Image to serve users
         run: |
