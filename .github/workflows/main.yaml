@@ -61,7 +61,18 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-          
+      
+      - name: Delete old images from ECR (keep 'latest')
+        run: |
+          # Lấy danh sách image không phải là latest
+          aws ecr list-images --repository-name ${{ secrets.ECR_REPOSITORY_NAME }} \
+          --filter "tagStatus=UNTAGGED" --query 'imageIds[*]' --output json \
+          | jq '.[] | {imageDigest: .imageDigest}' \
+          | xargs -n1 -I{} aws ecr batch-delete-image --repository-name ${{ secrets.ECR_REPOSITORY_NAME }} --image-ids {}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
           
   Continuous-Deployment:
     needs: build-and-push-ecr-image
