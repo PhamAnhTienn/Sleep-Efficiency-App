@@ -19,7 +19,7 @@ export default function ModernNotes() {
 
   const fetchNotes = async () => {
     try {
-      const response = await axios.get('https://54.81.174.105:8080/api/notes');
+      const response = await axios.get('/api/notes');
       setNotes(response.data);
     } catch (err) {
       setError('Failed to fetch notes. Please try again later.');
@@ -30,9 +30,9 @@ export default function ModernNotes() {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(`https://54.81.174.105:8080/api/notes/${editingId}`, formData);
+        await axios.put(`/api/notes/${editingId}`, formData);
       } else {
-        await axios.post('https://54.81.174.105:8080/api/notes', formData);
+        await axios.post('/api/notes', formData);
       }
       fetchNotes();
       resetForm();
@@ -43,7 +43,7 @@ export default function ModernNotes() {
 
   const handleDelete = async (name) => {
     try {
-      await axios.delete(`https://54.81.174.105:8080/api/notes/${name}`);
+      await axios.delete(`/api/notes/${name}`);
       fetchNotes();
     } catch (err) {
       setError('Failed to delete note.');

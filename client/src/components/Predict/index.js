@@ -33,7 +33,7 @@ const Predict = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://54.81.174.105:8080/predict', {
+      const response = await fetch('/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
