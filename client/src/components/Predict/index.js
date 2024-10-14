@@ -59,7 +59,7 @@ const Predict = () => {
         throw new Error('User information not found in local storage');
       }
   
-      const response = await fetch('http://54.81.174.105:8080/api/users/logout', {
+      const response = await fetch('/api/users/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
