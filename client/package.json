@@ -9,7 +9,7 @@
     "admin": "^1.4.1",
     "axios": "^1.7.3",
     "dotenv": "^16.4.5",
-    "firebase": "^10.12.4",
+    "firebase": "^10.14.1",
     "lucide-react": "^0.447.0",
     "mongoose": "^8.5.2",
     "react": "^18.3.1",
