@@ -54,8 +54,8 @@
     justify-content: center; /* Canh giữa theo chiều ngang */
     align-items: center; /* Canh giữa theo chiều dọc */
     display: flex;
-    margin-top: -70px;
-    margin-left: -100px;
+    margin-top: 20px;
+    margin-left: -10px;
   }
   
   .form-row-buttons {
