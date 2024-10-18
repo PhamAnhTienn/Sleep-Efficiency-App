@@ -147,5 +147,5 @@ open up your local host and port
 
 ## Screenshots
 
-![App Screenshot](./data/Screenshot 2024-10-18 115503.png)
+![App Screenshot](data/demo.png)
 
