@@ -1,0 +1,6 @@
+XGBoost:
+  n_estimators: 100
+  learning_rate: 0.05
+  max_depth: 3
+  subsample: 0.8
+  colsample_bytree: 0.8

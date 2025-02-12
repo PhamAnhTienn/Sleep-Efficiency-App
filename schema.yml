@@ -1,0 +1,19 @@
+COLUMNS:
+  ID: int64
+  Age: int64
+  Gender: object
+  Bedtime: object
+  Wakeup time: object
+  Sleep duration: float64
+  REM sleep percentage: int64
+  Deep sleep percentage: int64
+  Light sleep percentage: int64
+  Awakenings: float64
+  Caffeine consumption: float64
+  Alcohol consumption: float64
+  Smoking status: object
+  Exercise frequency: float64
+  Sleep efficiency : float64
+
+TARGET_COLUMN:
+  name: Sleep efficiency
