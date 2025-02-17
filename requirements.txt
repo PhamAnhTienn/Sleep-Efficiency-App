@@ -1,9 +1,9 @@
-pandas
+python-dotenv
 mlflow
 dagshub
-notebook
 dataclasses
 numpy
+pandas
 scikit-learn
 matplotlib
 python-box==6.0.2
@@ -14,8 +14,10 @@ joblib
 types-PyYAML
 Flask
 Flask-Cors
+flask_sqlalchemy
+flask_bcrypt
+flask_session
 xgboost
-catboost
-lightgbm
+redis
 
 -e .
