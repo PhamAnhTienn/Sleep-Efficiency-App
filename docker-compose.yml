@@ -5,8 +5,13 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
     networks:
       - sleep
+
+volumes:
+  redis_data:
 
 networks:
   sleep:

@@ -66,6 +66,11 @@ def register_user():
         "id": new_user.id,
         "email": new_user.email
     })
+    
+@app.route("/logout", methods=["POST"])
+def logout_user():
+    session.pop("user_id")
+    return "200"
 
 # Route to trigger training the model 
 @app.route('/train', methods=['GET'])
@@ -132,4 +137,4 @@ def predict():
         return jsonify({'error': str(e)}), 500
     
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=5000, debug=True)

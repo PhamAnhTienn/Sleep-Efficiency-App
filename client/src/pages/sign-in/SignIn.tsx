@@ -15,6 +15,8 @@ import ForgotPassword from './components/ForgotPassword';
 import AppTheme from '../theme/AppTheme';
 import ColorModeSelect from '../theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon } from './components/CustomIcons';
+import { useNavigate } from "react-router-dom";
+import httpClient from "../../httpClient";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -59,8 +61,11 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
+  const navigate = useNavigate();
+  const [email, setEmail] = React.useState<string>("");
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+  const [password, setPassword] = React.useState<string>("");
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
@@ -73,16 +78,29 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!validateInputs()) {
+      return; 
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    try {
+      const response = await httpClient.post("http://localhost:5000/login", {
+        email,
+        password,
+      });
+
+      console.log("Login successful:", response.data);
+
+      navigate("/");
+
+    } catch (error) {
+      console.error("Login failed: ", error);
+
+      setEmailError(true);
+      setEmailErrorMessage("Invalid email or password");
+    }
   };
 
   const validateInputs = () => {
@@ -151,6 +169,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 fullWidth
                 variant="outlined"
                 color={emailError ? 'error' : 'primary'}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </FormControl>
             <FormControl>
@@ -168,6 +187,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                 fullWidth
                 variant="outlined"
                 color={passwordError ? 'error' : 'primary'}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </FormControl>
             <ForgotPassword open={open} handleClose={handleClose} />
