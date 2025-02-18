@@ -93,7 +93,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
       console.log("Login successful:", response.data);
 
-      navigate("/");
+      navigate("/predict");
 
     } catch (error) {
       console.error("Login failed: ", error);

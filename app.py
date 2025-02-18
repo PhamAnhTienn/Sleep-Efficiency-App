@@ -21,9 +21,18 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-@app.route('/')
-def home():
-    return "Hello, World!"
+@app.route("/@me")
+def get_current_user():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+    
+    user = User.query.filter_by(id=user_id).first()
+    return jsonify({
+        "id": user.id,
+        "email": user.email
+    }) 
 
 @app.route("/login", methods=["POST"])
 def login_user():
@@ -104,7 +113,7 @@ def predict():
         Caffeine_consumption = 1 if data['Caffeine_consumption'] == 'Yes' else 0
         Alcohol_consumption = 1 if data['Alcohol_consumption'] == 'Yes' else 0
         Smoking_status = 1 if data['Smoking_status'] == 'Yes' else 0
-        Exercise_frequency = 1 if float(data['Exercise_frequency']) > 1 else 0
+        Exercise_frequency = float(data['Exercise_frequency']) if float(data['Exercise_frequency']) > 1 else 0
 
         input_data = [
             Age, Gender, Bedtime, Wakeup_time, Sleep_duration, 
