@@ -16,6 +16,8 @@ import ColorModeSelect from '../theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon } from './components/CustomIcons';
 import { useNavigate } from "react-router-dom";
 import httpClient from "../../httpClient";
+import { auth, googleProvider } from '../../models/firebase';
+import { signInWithPopup } from 'firebase/auth';
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -94,6 +96,24 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     }
 
     return isValid;
+  };
+
+  const handleGoogleSignUp = async () => {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        console.log(result);
+  
+        const response = await httpClient.post('http://localhost:5000/register', {
+          email: result.user.email,
+          password: result.user.uid,
+        });
+  
+        console.log("Register successful:", response.data);
+  
+        navigate("/predict");
+      } catch (error) {
+        console.error('Error during Google sign-in', error);
+      }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -188,7 +208,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign up with Google')}
+              onClick={() => handleGoogleSignUp()}
               startIcon={<GoogleIcon />}
             >
               Sign up with Google
