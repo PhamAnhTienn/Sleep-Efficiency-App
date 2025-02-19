@@ -1,7 +1,8 @@
 client/
+venv/
 __pycache__/
 logs
-Sleep_Efficientcy_App.egg-info
-research
+Sleep_Efficientcy_App.egg-info/
+research/
 README.md
 LICENSE

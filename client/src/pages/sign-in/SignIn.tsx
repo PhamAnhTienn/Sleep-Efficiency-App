@@ -250,7 +250,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <Link
-                href="http://localhost:3000/register"
+                href="https://sleepefficiency.vercel.app/register"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
