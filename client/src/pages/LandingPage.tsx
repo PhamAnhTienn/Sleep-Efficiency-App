@@ -64,9 +64,12 @@ const LandingPage: React.FC = () => {
   const [smokingStatus, setSmokingStatus] = useState("No");
   const [exerciseFrequency, setExerciseFrequency] = useState("");
   const [prediction, setPrediction] = useState("");
+  const [isCalculating, setIsCalculating] = useState(false);
 
   const handlePredict = async () => {
     try {
+      setIsCalculating(true);
+      setPrediction(""); 
       const response = await httpClient.post("http://localhost:5000/predict", {
         Age: age,
         Gender: gender,
@@ -84,6 +87,8 @@ const LandingPage: React.FC = () => {
       setPrediction(response.data.result || "");
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsCalculating(false);
     }
   };
 
@@ -342,6 +347,7 @@ const LandingPage: React.FC = () => {
                 variant="contained"
                 size="large"
                 onClick={handlePredict}
+                disabled={isCalculating}
                 sx={{ 
                   minWidth: 200,
                   bgcolor: 'primary.main',
@@ -351,26 +357,97 @@ const LandingPage: React.FC = () => {
                   }
                 }}
               >
-                Predict
+                {isCalculating ? 'Calculating...' : 'Predict'}
               </Button>
             </Box>
 
-            {prediction && (
+            {(isCalculating || prediction) && (
               <Card 
                 sx={{ 
                   mt: 4, 
                   bgcolor: 'primary.main', 
                   color: 'primary.contrastText',
-                  boxShadow: 3
+                  boxShadow: 3,
+                  position: 'relative',
+                  minHeight: 200,
+                  overflow: 'hidden'
                 }}
               >
                 <CardContent>
-                  <Typography variant="h5" component="div" align="center">
-                    Predicted Sleep Efficiency Score
-                  </Typography>
-                  <Typography variant="h3" component="div" align="center" sx={{ mt: 2 }}>
-                    {prediction}
-                  </Typography>
+                  {isCalculating ? (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: 160,
+                        position: 'relative'
+                      }}
+                    >
+                      <Typography variant="h5" component="div" align="center" sx={{ mb: 3 }}>
+                        Calculating Sleep Efficiency Score...
+                      </Typography>
+                      <Box
+                        sx={{
+                          position: 'relative',
+                          width: '100%',
+                          height: 4,
+                          bgcolor: 'rgba(255, 255, 255, 0.2)',
+                          borderRadius: 2,
+                          overflow: 'hidden'
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            bottom: 0,
+                            width: '30%',
+                            bgcolor: 'primary.contrastText',
+                            borderRadius: 2,
+                            animation: 'moveRight 1.5s infinite linear',
+                            '@keyframes moveRight': {
+                              '0%': {
+                                left: '-30%',
+                              },
+                              '100%': {
+                                left: '100%',
+                              },
+                            },
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  ) : (
+                    <>
+                      <Typography variant="h5" component="div" align="center">
+                        Sleep Efficiency Score
+                      </Typography>
+                      <Typography 
+                        variant="h3" 
+                        component="div" 
+                        align="center" 
+                        sx={{ 
+                          mt: 2,
+                          animation: 'fadeIn 0.5s ease-in',
+                          '@keyframes fadeIn': {
+                            '0%': {
+                              opacity: 0,
+                              transform: 'scale(0.9)',
+                            },
+                            '100%': {
+                              opacity: 1,
+                              transform: 'scale(1)',
+                            },
+                          },
+                        }}
+                      >
+                        {prediction}
+                      </Typography>
+                    </>
+                  )}
                 </CardContent>
               </Card>
             )}

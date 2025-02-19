@@ -19,5 +19,6 @@ flask_bcrypt
 flask_session
 xgboost
 redis
+psycopg2-binary
 
 -e .
