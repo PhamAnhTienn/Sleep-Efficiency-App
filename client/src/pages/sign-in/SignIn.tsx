@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import httpClient from "../../httpClient";
 import { auth, googleProvider } from '../../models/firebase';
 import { signInWithPopup } from 'firebase/auth';
+import { Alert, Snackbar } from '@mui/material';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -71,6 +72,8 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -79,6 +82,8 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleCloseSnackbar = () => setErrorSnackbarOpen(false);
 
   const handleGoogleSignIn = async () => {
     try {
@@ -115,11 +120,13 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
       navigate("/predict");
 
-    } catch (error) {
-      console.error("Login failed: ", error);
-
-      setEmailError(true);
-      setEmailErrorMessage("Invalid email or password");
+    } catch (error: any) {
+      if (error.response?.data?.error) {
+        setErrorMessage(error.response.data.error);
+      } else {
+        setErrorMessage("Unknown error occurred.");
+      }
+      setErrorSnackbarOpen(true);
     }
   };
 
@@ -260,6 +267,19 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
           </Box>
         </Card>
       </SignInContainer>
+      <Snackbar
+        open={errorSnackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="error"
+          sx={{ width: '100%' }}
+        >
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </AppTheme>
   );
 }

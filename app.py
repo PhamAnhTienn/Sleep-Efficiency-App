@@ -42,10 +42,10 @@ def login_user():
     user = User.query.filter_by(email=email).first()
 
     if user is None:
-        return jsonify({"error": "Unauthorized"}), 401
+        return jsonify({"error": "User does not exist"}), 401
 
     if not bcrypt.check_password_hash(user.password, password):
-        return jsonify({"error": "Unauthorized"}), 401
+        return jsonify({"error": "Incorrect password"}), 401
     
     session["user_id"] = user.id
 
