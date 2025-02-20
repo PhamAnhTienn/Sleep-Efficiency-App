@@ -1,5 +1,18 @@
 version: "3.8"
+
 services:
+  web:
+    build: .
+    container_name: web
+    ports:
+      - "5000:5000"
+    environment:
+      - DAGSHUB_TOKEN=${DAGSHUB_TOKEN}
+    networks:
+      - sleep
+    depends_on:
+      - redis
+
   redis:
     image: redis:latest
     container_name: redis
@@ -9,6 +22,11 @@ services:
       - redis_data:/data
     networks:
       - sleep
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   redis_data:

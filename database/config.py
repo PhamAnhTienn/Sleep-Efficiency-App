@@ -14,7 +14,7 @@ class ApplicationConfig:
     SESSION_TYPE = "redis"
     SESSION_PERMANENT = False
     SESSION_USE_SIGNER = True
-    SESSION_REDIS = redis.from_url("redis://127.0.0.1:6379")
+    SESSION_REDIS = redis.from_url("redis://redis:6379")
     
     SESSION_COOKIE_SAMESITE = "None"  # Để cookie được gửi cross-site
     SESSION_COOKIE_SECURE = True      # Chỉ gửi cookie qua HTTPS

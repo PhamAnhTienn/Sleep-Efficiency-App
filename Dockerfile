@@ -8,9 +8,9 @@ RUN apt update && apt install -y awscli && apt clean && rm -rf /var/lib/apt/list
 
 WORKDIR /app
 
-COPY requirements.txt /app/
+COPY requirements.txt setup.py /app/
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
-COPY . /app
+COPY . /app/
 
 CMD ["python3", "app.py"]
