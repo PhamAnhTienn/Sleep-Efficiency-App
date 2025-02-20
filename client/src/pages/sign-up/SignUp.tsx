@@ -224,11 +224,13 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
               <Link
-                href="https://sleepefficiency.vercel.app/signin"
+                component="button"
+                type="button"
+                onClick={() => navigate("/signin")}
                 variant="body2"
-                sx={{ alignSelf: 'center' }}
+                sx={{ alignSelf: "center", cursor: "pointer" }}
               >
-                Sign in
+                Sign In
               </Link>
             </Typography>
           </Box>
