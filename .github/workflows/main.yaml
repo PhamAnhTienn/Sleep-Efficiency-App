@@ -50,15 +50,15 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .  
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
+          
   Continuous-Deployment:
     needs: build-and-push-ecr-image
     runs-on: self-hosted
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials
@@ -71,20 +71,27 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-         
+
+      - name: Set Environment Variables
+        run: |
+          echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> $GITHUB_ENV
+          echo "ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY_NAME }}" >> $GITHUB_ENV
+
+      - name: Pull latest image
+        run: |
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
       - name: Stop and remove container if running
         run: |
-          docker ps -aq --filter "name=sleepeff" | grep -q . && docker stop sleepeff && docker rm -fv sleepeff || echo "No container running or stopped"
-       
-      - name: Run Docker Image to serve users
+          docker ps -aq --filter "name=web" | grep -q . && docker stop web && docker rm -fv web || echo "No running container to remove"
+
+      - name: Run Docker Image with Docker Compose
         run: |
-          docker run -d --pull always -p 8080:8080 --name=sleepeff \
-            -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
-            -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-            -e AWS_REGION="${{ secrets.AWS_REGION }}" \
-            "${{ steps.login-ecr.outputs.registry }}"/"${{ secrets.ECR_REPOSITORY_NAME }}":latest
+          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+          AWS_REGION=${{ secrets.AWS_REGION }} \
+          docker-compose -f docker-compose.yml up -d --force-recreate --remove-orphans
 
       - name: Clean previous images and containers
         run: |
           docker system prune -f
-
