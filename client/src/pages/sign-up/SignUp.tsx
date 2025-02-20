@@ -103,14 +103,14 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         const result = await signInWithPopup(auth, googleProvider);
         console.log(result);
   
-        const response = await httpClient.post('http://localhost:5000/register', {
+        const response = await httpClient.post('/register', {
           email: result.user.email,
           password: result.user.uid,
         });
   
         console.log("Register successful:", response.data);
   
-        navigate("/predict");
+        navigate("/main");
       } catch (error) {
         console.error('Error during Google sign-in', error);
       }
@@ -124,14 +124,14 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     }
   
     try {
-      const response = await httpClient.post("http://localhost:5000/register", {
+      const response = await httpClient.post("/register", {
         email,
         password,
       });
   
       console.log("Register successful:", response.data);
   
-      navigate("/login");
+      navigate("/signin");
   
     } catch (error) {
       console.error("Register failed: ", error);
@@ -224,7 +224,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
               <Link
-                href="http://localhost:3000/login"
+                href="https://sleepefficiency.vercel.app/singin"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >

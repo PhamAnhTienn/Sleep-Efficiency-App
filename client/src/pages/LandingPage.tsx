@@ -70,7 +70,7 @@ const LandingPage: React.FC = () => {
     try {
       setIsCalculating(true);
       setPrediction(""); 
-      const response = await httpClient.post("http://localhost:5000/predict", {
+      const response = await httpClient.post("/predict", {
         Age: age,
         Gender: gender,
         Bedtime: bedtime,
@@ -94,8 +94,8 @@ const LandingPage: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      await httpClient.post("http://localhost:5000/logout");
-      navigate("/login");
+      await httpClient.post("/logout");
+      navigate("/signin");
     } catch (error) {
       console.error(error);
     }
@@ -104,7 +104,7 @@ const LandingPage: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await httpClient.get("http://localhost:5000/@me");
+        const response = await httpClient.get("/@me");
         setUser(response.data);
       } catch (error) {
         console.log("Not authenticated");

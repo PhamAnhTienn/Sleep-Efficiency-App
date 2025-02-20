@@ -40,7 +40,7 @@ const Home: React.FC = () => {
           <Button
             variant="contained"
             size="large"
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/signin')}
             sx={{
               backgroundColor: 'white',
               color: '#2193b0',
