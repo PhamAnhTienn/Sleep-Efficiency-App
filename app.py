@@ -21,7 +21,7 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-@app.route("/@me")
+@app.route("/api/@me")
 def get_current_user():
     user_id = session.get("user_id")
 
@@ -34,7 +34,7 @@ def get_current_user():
         "email": user.email
     }) 
 
-@app.route("/login", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 def login_user():
     email = request.json["email"]
     password = request.json["password"]
@@ -54,7 +54,7 @@ def login_user():
         "email": user.email
     })
     
-@app.route("/register", methods=["POST"])
+@app.route("/api/register", methods=["POST"])
 def register_user():
     email = request.json["email"]
     password = request.json["password"]
@@ -64,7 +64,7 @@ def register_user():
     if user_exists:
         return jsonify({"error": "User already exists"}), 409
 
-    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8') # Use decode to convert bytes to string
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
     new_user = User(email=email, password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
@@ -76,19 +76,17 @@ def register_user():
         "email": new_user.email
     })
     
-@app.route("/logout", methods=["POST"])
+@app.route("/api/logout", methods=["POST"])
 def logout_user():
     session.pop("user_id")
     return "200"
 
-# Route to trigger training the model 
-@app.route('/train', methods=['GET'])
+@app.route('/api/train', methods=['GET'])
 def training():
     os.system("python main.py")
     return "Training Successful"
 
-# Route to handle predictions
-@app.route('/predict', methods=['POST'])
+@app.route('/api/predict', methods=['POST'])
 def predict():
     try:
         data = request.json

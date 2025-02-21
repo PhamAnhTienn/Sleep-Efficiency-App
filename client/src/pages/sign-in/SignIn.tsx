@@ -90,7 +90,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       const result = await signInWithPopup(auth, googleProvider);
       console.log(result);
 
-      const response = await httpClient.post('/login', {
+      const response = await httpClient.post('/api/login', {
         email: result.user.email,
         password: result.user.uid,
       });
@@ -111,7 +111,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     }
 
     try {
-      const response = await httpClient.post("/login", {
+      const response = await httpClient.post("/api/login", {
         email,
         password,
       });
