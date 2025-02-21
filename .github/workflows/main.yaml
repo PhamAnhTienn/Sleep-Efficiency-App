@@ -72,10 +72,14 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Set Environment Variables
+      - name: Set Environment Variables & Create .env file
         run: |
           echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> $GITHUB_ENV
           echo "ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY_NAME }}" >> $GITHUB_ENV
+
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
+          echo "POSTGRES_URL=${{ secrets.POSTGRES_URL }}" >> .env
+          echo "DAGSHUB_TOKEN=${{ secrets.DAGSHUB_TOKEN }}" >> .env
 
       - name: Pull latest image
         run: |
@@ -87,11 +91,8 @@ jobs:
 
       - name: Run Docker Image with Docker Compose
         run: |
-          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-          AWS_REGION=${{ secrets.AWS_REGION }} \
-          docker-compose -f docker-compose.yml up -d --force-recreate --remove-orphans
+          docker-compose -f docker-compose.yml --env-file .env up -d --force-recreate --remove-orphans
 
       - name: Clean previous images and containers
         run: |
-          docker system prune -f
+          docker system prune -f --volumes

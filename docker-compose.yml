@@ -6,8 +6,8 @@ services:
     container_name: web
     ports:
       - "5000:5000"
-    environment:
-      - DAGSHUB_TOKEN=${DAGSHUB_TOKEN}
+    env_file:
+      - .env
     networks:
       - sleep
     depends_on:
