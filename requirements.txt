@@ -1,6 +1,7 @@
 python-dotenv
 mlflow
 dagshub
+gdown
 dataclasses
 numpy
 pandas
